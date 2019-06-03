@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import java.util.UUID;
 
 
 /**
@@ -36,7 +35,7 @@ import java.util.UUID;
 })
 public abstract class AbstractEntity {
 
-    protected String id = UUID.randomUUID().toString();
+    protected String id;
 
     /**
      * Gets the value of the id property.

@@ -4,6 +4,7 @@ package ru.karelin.tmsoapclient.command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.karelin.tmsoapclient.api.util.ServiceLocator;
+import ru.karelin.tmwebspring.soap.LoginEndpoint;
 
 import java.util.Collections;
 
@@ -13,6 +14,9 @@ public class UserLogoutCommand extends AbstractCommand {
 
     @Autowired
     private ServiceLocator locator;
+
+    @Autowired
+    LoginEndpoint loginEndpoint;
 
    /* @Autowired
     private SessionEndpoint sessionEndpoint;*/
@@ -35,7 +39,18 @@ public class UserLogoutCommand extends AbstractCommand {
 
     @Override
     public void execute(final String... params)  {
-        locator.setCookies(Collections.emptyList());
-        System.out.println("You have successfully logged out");
+        if(loginEndpoint.singOut()) {
+            locator.setCookies(Collections.emptyList());
+            locator.setCurrentUserId(null);
+            System.out.println("You have successfully logged out");
+        }
+        else {
+            System.out.println("Something went wrong. Do you want force logout? (y/n");
+            if(ts.readLn().equals("y")){
+                locator.setCookies(Collections.emptyList());
+                locator.setCurrentUserId(null);
+                System.out.println("Force logout made");
+            }
+        }
     }
 }
